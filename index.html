@@ -1,157 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Solo RPG — Health Tracker</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <!-- Chart.js for progress chart -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
-  <script src="app.js" defer></script>
+  <meta charset="UTF-8">
+  <title>نظام صحي - أنمي HUD</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
 </head>
 <body>
-  <div class="layout">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="avatar" id="avatar"></div>
-        <div class="brand-name">Solo RPG</div>
-        <small class="brand-sub">Health Tracker</small>
+  <div id="particles-js"></div>
+  <aside class="sidebar">
+    <h2>✨ القائمة</h2>
+    <ul>
+      <li><a href="#dashboard">📊 الحالة</a></li>
+      <li><a href="#tasks">📝 المهام</a></li>
+      <li><a href="#assessment">🧪 التقييم</a></li>
+      <li><a href="#history">📖 السجل</a></li>
+      <li><a href="#plan">🏋️ الخطة</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <section id="dashboard" class="panel">
+      <h2>📊 الحالة</h2>
+      <div id="avatar"></div>
+      <div id="stats">
+        <p>المستوى: <span id="level">1</span></p>
+        <p>الرتبة: <span id="rank">E</span></p>
+        <p>الصحة: <progress id="healthBar" max="100" value="100"></progress></p>
+        <p>الخبرة: <progress id="expBar" max="100" value="0"></progress></p>
       </div>
-      <nav class="nav">
-        <a href="#dash" class="nav-link">لوحة الحالة</a>
-        <a href="#tasks" class="nav-link">المهام</a>
-        <a href="#assess" class="nav-link">التقييم الذكي</a>
-        <a href="#history" class="nav-link">السجل & الميداليات</a>
-        <a href="#plan" class="nav-link">الخطة المقترحة</a>
-      </nav>
-      <div class="side-actions">
-        <button id="saveBtn" class="btn ghost">حفظ</button>
-        <button id="loadBtn" class="btn ghost">تحميل</button>
-        <button id="exportBtn" class="btn ghost">تصدير</button>
-        <input id="importFile" type="file" accept=".json" style="display:none">
-        <button id="importBtn" class="btn ghost">استيراد</button>
-        <button id="resetBtn" class="btn danger">إعادة ضبط</button>
-      </div>
-    </aside>
+      <canvas id="progressChart"></canvas>
+    </section>
 
-    <!-- Main -->
-    <main class="main">
-      <!-- Dashboard -->
-      <section id="dash" class="card">
-        <header class="section-head">
-          <h1>لوحة الحالة</h1>
-          <div class="actions">
-            <button id="fightBtn" class="btn">⚔️ قتال عشوائي</button>
-            <button id="restBtn" class="btn">🛌 استراحة</button>
-          </div>
-        </header>
+    <section id="tasks" class="panel">
+      <h2>📝 المهام اليومية</h2>
+      <input id="taskText" placeholder="أدخل مهمة">
+      <button id="addTaskBtn">➕ إضافة</button>
+      <ul id="taskList"></ul>
+    </section>
 
-        <div class="grid stats">
-          <div class="stat">
-            <div class="stat-label">Level</div>
-            <div id="level" class="stat-val" lang="en">1</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Rank</div>
-            <div id="rank" class="stat-val">E</div>
-          </div>
-          <div class="bar-group">
-            <div class="bar-label">Health</div>
-            <div class="bar-wrap"><div id="healthBar" class="bar"></div></div>
-            <div id="healthText" class="bar-text" lang="en">100 / 100</div>
-          </div>
-          <div class="bar-group">
-            <div class="bar-label">EXP</div>
-            <div class="bar-wrap"><div id="expBar" class="bar exp"></div></div>
-            <div id="expText" class="bar-text" lang="en">0 / 100</div>
-          </div>
-        </div>
+    <section id="assessment" class="panel">
+      <h2>🧪 التقييم الذكي</h2>
+      <div id="questions"></div>
+      <button id="startAssessBtn">ابدأ التقييم</button>
+      <button id="applyPlanBtn">تطبيق الخطة</button>
+      <p>النتيجة: <span id="score">0</span></p>
+      <p>الحكم: <span id="grade">—</span></p>
+      <div id="planText"></div>
+    </section>
 
-        <div class="grid mini">
-          <div class="mini-stat"><span>Strength</span><strong id="strength" lang="en">1</strong></div>
-          <div class="mini-stat"><span>Stamina</span><strong id="stamina" lang="en">1</strong></div>
-          <div class="mini-stat"><span>Speed</span><strong id="speed" lang="en">1</strong></div>
-          <div class="mini-stat"><span>Agility</span><strong id="agility" lang="en">1</strong></div>
-          <div class="mini-stat"><span>Intelligence</span><strong id="intelligence" lang="en">1</strong></div>
-          <div class="mini-stat"><span>Sense</span><strong id="sense" lang="en">1</strong></div>
-        </div>
+    <section id="history" class="panel">
+      <h2>📖 السجل</h2>
+      <ul id="historyList"></ul>
+    </section>
 
-        <div id="badges" class="badges"></div>
-        <div id="log" class="log"></div>
-        <div id="msg" class="msg"></div>
+    <section id="plan" class="panel">
+      <h2>🏋️ الخطة اليومية</h2>
+      <div id="dailyPlan"></div>
+    </section>
+  </main>
 
-        <div class="chart-wrap">
-          <canvas id="progressChart" height="140"></canvas>
-        </div>
-      </section>
+  <div id="reminderPopup" class="popup"></div>
 
-      <!-- Tasks -->
-      <section id="tasks" class="card">
-        <header class="section-head">
-          <h2>المهام اليومية</h2>
-        </header>
-        <div class="task-input">
-          <input id="taskText" placeholder="اكتب مهمة...">
-          <input id="taskMins" type="number" min="5" max="180" value="30" title="المدة بالدقائق">
-          <button id="addTaskBtn" class="btn">إضافة</button>
-        </div>
-        <ul id="tasksList" class="tasks"></ul>
-        <small class="muted">لو انتهى وقت المهمة قبل إنهائها هتخسر شوية صحة/XP.</small>
-      </section>
-
-      <!-- Assess -->
-      <section id="assess" class="card">
-        <header class="section-head">
-          <h2>التقييم الذكي</h2>
-          <div class="actions">
-            <button id="startAssessBtn" class="btn">ابدأ</button>
-            <button id="applyPlanBtn" class="btn ghost">أضف الخطة لمهامي</button>
-          </div>
-        </header>
-        <div id="assessArea" class="assess-area">
-          <p class="muted">أجب عن الأسئلة، النظام هيحسب درجتك ويطلع خطة مناسبة.</p>
-        </div>
-        <div id="assessResult" class="assess-result hidden">
-          <div class="score-box">
-            <div>Score</div>
-            <div id="assessScore" class="score" lang="en">0</div>
-            <div id="assessGrade" class="grade">—</div>
-          </div>
-          <div class="plan-box">
-            <div class="title">الخطة المقترحة اليوم</div>
-            <div id="planText" class="small"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- History -->
-      <section id="history" class="card">
-        <header class="section-head">
-          <h2>السجل & الميداليات</h2>
-        </header>
-        <table class="history-table">
-          <thead>
-            <tr><th>التاريخ</th><th>Score</th><th>الرتبة</th></tr>
-          </thead>
-          <tbody id="historyBody"></tbody>
-        </table>
-      </section>
-
-      <!-- Plan -->
-      <section id="plan" class="card">
-        <header class="section-head">
-          <h2>الخطة المختصرة</h2>
-        </header>
-        <div id="quickPlan" class="small"></div>
-      </section>
-    </main>
-  </div>
-
-  <!-- Simple popup for reminders -->
-  <div id="popup" class="popup hidden"><span id="popupText"></span><button id="popupClose">حسناً</button></div>
+  <script src="app.js"></script>
 </body>
 </html>
