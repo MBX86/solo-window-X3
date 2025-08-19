@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Solo RPG — نافذة الإحصائيات + التقييم الذكي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>Solo RPG — STAT WINDOW</h1>
+      <div class="top-actions">
+        <button id="saveBtn">💾 حفظ</button>
+        <button id="loadBtn">📂 تحميل</button>
+        <button id="exportBtn">⬇️ تصدير</button>
+        <button id="importBtn">⬆️ استيراد</button>
+        <button id="resetBtn">♻️ إعادة ضبط</button>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="left">
+        <div class="frame">
+          <div class="title">الحالة</div>
+          <div class="row"><span>Level</span><span id="level" lang="en">1</span></div>
+          <div class="row"><span>Rank</span><span id="rank">E</span></div>
+
+          <div class="stat-row">
+            <label>Health</label>
+            <div class="bar-wrap"><div id="healthBar" class="bar"></div></div>
+            <div id="healthText" class="small" lang="en">300 / 1000</div>
+          </div>
+
+          <div class="stat-row">
+            <label>EXP</label>
+            <div class="bar-wrap"><div id="expBar" class="bar exp"></div></div>
+            <div id="expText" class="small" lang="en">0 / 100</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-item"><label>Strength</label><div id="strength" lang="en">5</div></div>
+            <div class="stat-item"><label>Stamina</label><div id="stamina" lang="en">10</div></div>
+            <div class="stat-item"><label>Speed</label><div id="speed" lang="en">5</div></div>
+            <div class="stat-item"><label>Agility</label><div id="agility" lang="en">4</div></div>
+            <div class="stat-item"><label>Intelligence</label><div id="intelligence" lang="en">3</div></div>
+            <div class="stat-item"><label>Sense</label><div id="sense" lang="en">3</div></div>
+          </div>
+
+          <div class="small muted">XP لليفل التالي: <span id="nextXp" lang="en">100</span></div>
+        </div>
+
+        <div class="frame actions">
+          <div class="title">تدريبات / أفعال</div>
+          <div class="action-row">
+            <button id="trainStrength">تدريب قوة (+Strength)</button>
+            <button id="trainSpeed">تدريب سرعة (+Speed)</button>
+            <button id="restBtn">استراحة (استعادة صحة)</button>
+          </div>
+
+          <div class="title mt">قتال تجريبي</div>
+          <div class="combat-row">
+            <button id="fightBtn">🌩️ خوض معركة عشوائية</button>
+            <div id="combatLog" class="log small muted"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="frame">
+          <div class="title">المهام (Tasks)</div>
+          <div class="task-input">
+            <input id="taskText" placeholder="اكتب مهمة جديدة..." />
+            <button id="addTaskBtn">إضافة</button>
+          </div>
+          <ul id="tasksList" class="tasks"></ul>
+          <div class="small muted">ملاحظة: المهام لها مهلة بالـدقائق — لو انتهت هتنقص نقاط.</div>
+        </div>
+
+        <div class="frame">
+          <div class="title">حالة الحفظ</div>
+          <div id="msg" class="msg"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== لوحة التقييم الذكي ====== -->
+    <section class="assess panel">
+      <div class="frame full">
+        <div class="assess-header">
+          <h2>التقييم الذكي (اختبارات + تمارين)</h2>
+          <div class="assess-actions">
+            <select id="assessSelect">
+              <option value="strength">Strength — ضغطات في 60 ثانية</option>
+              <option value="stamina">Stamina — زمن 1.6 كم</option>
+              <option value="speed">Speed — زمن 30م</option>
+              <option value="agility">Agility — Shuttle 5×10م</option>
+              <option value="intelligence">Intelligence — اختبار سريع (5 أسئلة)</option>
+              <option value="sense">Sense — اختبار رد فعل (5 محاولات)</option>
+              <option value="health">Health — استبيان صحة مختصر</option>
+            </select>
+            <button id="startAssessBtn">ابدأ الاختبار</button>
+          </div>
+        </div>
+
+        <div id="assessArea" class="assess-area">
+          <p class="muted">اختر خانة واضغط "ابدأ الاختبار". الرجاء الإحماء أولاً وتوقف إذا شعرت بألم.</p>
+        </div>
+
+        <div id="assessResult" class="assess-result hidden">
+          <div class="score-box">
+            <div>Score</div>
+            <div id="assessScore" class="score" lang="en">0</div>
+            <div id="assessGrade" class="grade">—</div>
+          </div>
+          <div class="plan-box">
+            <div class="title">خطة تمارين مقترحة</div>
+            <div id="planText" class="small"></div>
+            <div class="plan-actions">
+              <button id="applyPlanBtn">إضافة الخطة لمهامي</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="history">
+          <div class="title">سجل التقييمات</div>
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>الخانة</th>
+                <th>النتيجة الخام</th>
+                <th>الوحدة</th>
+                <th>Score</th>
+                <th>التاريخ</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <small>Solo RPG — نسخة مع نظام تقييم ذكي. الحفظ محليًا فقط.</small>
+    </footer>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+:root{
+  --bg-overlay: rgba(2,6,23,0.6);
+  --card: rgba(255,255,255,0.06);
+  --accent:#f6b042;
+  --muted:#9fb0c8;
+  --white:#e6eef8;
+  --ok:#4caf50; --warn:#ffb300; --bad:#ef5350;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Cairo','Inter',system-ui,Arial;direction:rtl}
+body{
+  background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.0.3');
+  background-size:cover;background-position:center;min-height:100vh;color:var(--white);
+}
+.app{max-width:1200px;margin:18px auto;padding:16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+h1{font-size:20px;margin:0;font-weight:700}
+.top-actions button{margin-left:6px;padding:8px 12px;border-radius:8px;border:none;background:rgba(0,0,0,0.4);color:var(--white);cursor:pointer}
+.panel{display:flex;gap:14px;margin-top:12px}
+.left{flex:1;display:flex;flex-direction:column;gap:12px}
+.right{width:380px}
+.frame{backdrop-filter: blur(8px);background:var(--card);padding:14px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+.frame.full{width:100%}
+.title{font-weight:800;margin-bottom:8px;color:var(--accent)}
+.row{display:flex;justify-content:space-between;margin:6px 0;font-weight:600}
+.stat-row{margin:8px 0}
+.bar-wrap{background:rgba(255,255,255,0.08);height:16px;border-radius:10px;overflow:hidden;margin:8px 0}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#ff7a7a 0,#f6b042 100%);transition:width .5s ease-in-out;box-shadow:inset 0 -2px 8px rgba(0,0,0,0.35)}
+.exp{background:linear-gradient(90deg,#4ea7ff 0,#8bd6ff 100%)}
+.small{font-size:13px;color:var(--muted);margin-top:6px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.stat-item{background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));padding:10px;border-radius:10px;display:flex;flex-direction:column;align-items:center}
+.actions .action-row, .actions .combat-row{display:flex;gap:10px;flex-wrap:wrap}
+button{background:var(--accent);border:none;padding:10px 12px;border-radius:10px;color:#072231;font-weight:800;cursor:pointer}
+button:hover{filter:brightness(.95);transform:translateY(-2px)}
+.task-input{display:flex;gap:8px}
+.task-input input{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--white)}
+.tasks{list-style:none;padding:0;margin:8px 0;max-height:320px;overflow:auto}
+.task{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;margin-bottom:8px;background:rgba(255,255,255,0.08)}
+.task .meta{font-size:12px;color:var(--muted)}
+.log{white-space:pre-wrap;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;height:80px;overflow:auto}
+.msg{color:#b8ffcc;font-weight:700}
+.footer{text-align:center;margin-top:12px;color:var(--muted)}
+
+/* ====== لوحة التقييم ====== */
+.assess{flex-direction:column}
+.assess-header{display:flex;align-items:center;justify-content:space-between}
+.assess-actions{display:flex;gap:8px;align-items:center}
+.assess-area{margin-top:10px;padding:12px;background:rgba(0,0,0,0.25);border-radius:10px;min-height:92px}
+.assess-result{display:flex;gap:14px;margin-top:12px}
+.assess-result.hidden{display:none}
+.score-box{background:rgba(0,0,0,0.35);padding:12px;border-radius:10px;min-width:160px;text-align:center}
+.score{font-size:38px;font-weight:900}
+.grade{font-size:14px;color:var(--muted)}
+.plan-box{flex:1;background:rgba(0,0,0,0.35);padding:12px;border-radius:10px}
+.plan-actions{margin-top:8px}
+
+.history{margin-top:12px}
+.history-table{width:100%;border-collapse:collapse}
+.history-table th,.history-table td{border-bottom:1px solid rgba(255,255,255,0.08);padding:8px;text-align:right}
+.history-table th{color:var(--muted);font-weight:700}
+
+/* force latin digits */
+[lang="en"]{font-family:'Inter',system-ui,Arial;direction:ltr}
+
+@media (max-width:920px){.panel{flex-direction:column}.right{width:auto}}
